@@ -9,7 +9,7 @@ import {Button,Form,FormItem,
         Submenu,MenuItemGroup,
         MenuItem,Breadcrumb,BreadcrumbItem,Card,
       Row,Col,Table,TableColumn,Switch,Tooltip,
-      Pagination} from 'element-ui'
+      Pagination,Dialog} from 'element-ui'
 import axios from 'axios'
 //网络请求
 axios.defaults.baseURL = 'http://timemeetyou.com:8889/api/private/v1/'
@@ -42,6 +42,7 @@ Vue.use(TableColumn)
 Vue.use(Switch)
 Vue.use(Tooltip)
 Vue.use(Pagination)
+Vue.use(Dialog)
 //全局挂载Message组件，可在其他组件内通过this.$message进行访问
 Vue.prototype.$message = Message
 Vue.config.productionTip = false

@@ -2,7 +2,7 @@
 <el-container class="home-container">
 <!--头部-->
   <el-header>
-    <span>电商管理系统</span>
+    <span>电商后台管理系统</span>
     <el-button type="info" @click="logout">退出</el-button></el-header>
 <!--主体区域-->
   <el-container>
