@@ -9,7 +9,7 @@ import {Button,Form,FormItem,
         Submenu,MenuItemGroup,
         MenuItem,Breadcrumb,BreadcrumbItem,Card,
       Row,Col,Table,TableColumn,Switch,Tooltip,
-      Pagination,Dialog} from 'element-ui'
+      Pagination,Dialog,MessageBox} from 'element-ui'
 import axios from 'axios'
 //网络请求
 axios.defaults.baseURL = 'http://timemeetyou.com:8889/api/private/v1/'
@@ -46,6 +46,7 @@ Vue.use(Dialog)
 //全局挂载Message组件，可在其他组件内通过this.$message进行访问
 Vue.prototype.$message = Message
 Vue.config.productionTip = false
+Vue.prototype.$confirm = MessageBox.confirm
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

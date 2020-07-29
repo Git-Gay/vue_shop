@@ -43,7 +43,7 @@
                     </el-tooltip>
                    
                     <el-tooltip  effect="dark" content="删除角色" placement="top" :enterable="false">
-                         <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
+                         <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeUserById(scope.row.id)"></el-button>
                     </el-tooltip>
                 </template>
             </el-table-column>
@@ -206,7 +206,7 @@ export default {
        //监听switch开关状态的改变
        async userStateChanged(userinfo){
         //    console.log(userinfo)
-          const {data: res} = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
+          const {data: res} = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)   //字符串模板，使用``反引号
           if(res.meta.status!== 200){
               userinfo.mg_state = !userinfo.mg_state
               return this.$message.error('更新用户状态失败')
@@ -257,6 +257,22 @@ export default {
                this.editDialogVisible = false
                this.getUserList()
            })
+       },
+       //删除用户数据
+       async removeUserById(id){
+        const removeRes  = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).catch(err =>err) 
+        if(removeRes == 'confirm'){
+            const {data: res} = await this.$http.delete('users/' + id)
+            if(res.meta.status !== 200){
+                this.$message.error('删除失败')
+            }
+            this.$message.success('删除成功')
+            this.getUserList()
+        }
        }
     },
 }
