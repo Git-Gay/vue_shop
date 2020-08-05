@@ -8,8 +8,8 @@ import {Button,Form,FormItem,
         Header,Aside,Main,Menu,
         Submenu,MenuItemGroup,
         MenuItem,Breadcrumb,BreadcrumbItem,Card,
-      Row,Col,Table,TableColumn,Switch,Tooltip,
-      Pagination,Dialog,MessageBox,Tag} from 'element-ui'
+        Row,Col,Table,TableColumn,Switch,Tooltip,
+        Pagination,Dialog,MessageBox,Tag,Tree} from 'element-ui'
 import axios from 'axios'
 //网络请求
 axios.defaults.baseURL = 'http://timemeetyou.com:8889/api/private/v1/'
@@ -19,7 +19,6 @@ axios.interceptors.request.use(config =>{
   config.headers.Authorization = window.sessionStorage.getItem("token")
   return config
 })
-
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
@@ -44,6 +43,7 @@ Vue.use(Tooltip)
 Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Tag)
+Vue.use(Tree)
 //全局挂载Message组件，可在其他组件内通过this.$message进行访问
 Vue.prototype.$message = Message
 Vue.config.productionTip = false
