@@ -26,7 +26,7 @@
             >
               <!--一级权限-->
               <el-col :span="5">
-                <el-tag>{{item.authName}}</el-tag>
+                <el-tag @close="removeRightById(scope.row,item.id)" closable>{{item.authName}}</el-tag>
                 <i class="el-icon-caret-right"></i>
               </el-col>
               <el-col :span="19">
@@ -35,10 +35,12 @@
                   :key="item2.id"
                   :class="[index2 === 0 ? '' : 'rowtop']"
                 >
+                <!--二级权限-->
                   <el-col :span="6">
-                    <el-tag type="success">{{item2.authName}}</el-tag>
+                    <el-tag type="success" closable @close="removeRightById(scope.row,item2.id)">{{item2.authName}}</el-tag>
                     <i class="el-icon-caret-right"></i>
                   </el-col>
+                  <!--三级权限-->
                   <el-col :span="18">
                     <el-tag
                       type="warning"
@@ -80,11 +82,12 @@
           node-key="id"
           default-expand-all
           :default-checked-keys="childrenKeys"
+          ref="treeRef"
         ></el-tree>
       
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="allowRights">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -104,7 +107,9 @@ export default {
         label: "authName",
       },
       //默认选中的节点
-      childrenKeys: [105, 116],
+      childrenKeys: [],
+      //分配权限时传递该参数
+      roleId: '',
     };
   },
   created() {
@@ -145,6 +150,7 @@ export default {
     },
     //展示所有权限列表
     async setDiologVisible(role) {
+      this.roleId = role.id;   //分配权限时使用
       const { data: res } = await this.$http.get("rights/tree");
       if (res.meta.status != 200) {
         return this.$message.error("获取权限列表失败!");
@@ -166,6 +172,22 @@ export default {
     //关闭对话框清空三级节点数组
     clearArr(){
          this.childrenKeys.length = 0;
+    },
+    //获取到选中和半选中的节点的id，分配权限
+    async allowRights(){
+      const keys = [
+        //展开运算符
+        ...this.$refs.treeRef.getCheckedKeys(),
+        ...this.$refs.treeRef.getHalfCheckedKeys()
+      ] ;
+      const idArr = keys.join(',') //组成以逗号分隔的数组
+      const {data: res} = await this.$http.post(`roles/${this.roleId}/rights`,{rids: idArr})
+      if(res.meta.status != 200){
+        this.$message.error('分配失败')
+      }
+      this.getRoleList();
+      this.dialogVisible = false;
+      this.$message.success('分配成功')
     }
   },
 };
